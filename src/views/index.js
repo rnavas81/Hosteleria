@@ -1,6 +1,7 @@
 /**
  * Carga todas las vistas
  */
-import LoginView from './loginView';
+import AuthScreen from './AuthScreen';
+import ProfileScreen from './ProfileScreen';
 
-export { LoginView };
+export { AuthScreen,ProfileScreen };
