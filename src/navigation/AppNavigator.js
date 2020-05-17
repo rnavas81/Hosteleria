@@ -8,26 +8,30 @@
 import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack'
-import { AuthScreen,ProfileScreen } from '../views';
+import { AuthScreen,ProfileScreen,RegisterScreen,CategoriesScreen } from '../views';
+import {getColors as colors} from '../styles/colors';
+import { Alert,TouchableOpacity,Text } from 'react-native';
 
 export default createAppContainer(
     createStackNavigator(
         {//Pantalla a usar
-            Login: {screen: AuthScreen},
-            Profile: {screen: ProfileScreen},
+            Login       : {screen: AuthScreen},
+            Profile     : {screen: ProfileScreen},
+            Register    : {screen: RegisterScreen},
+            Categories  : {screen: CategoriesScreen},
         },
         {//Propiedades del stack
-            initialRouteName: "Profile",
+            initialRouteName: "Categories",
             defaultNavigationOptions: {
                 headerStyle: {
-                    backgroundColor: "#0066FF",
+                    backgroundColor: colors.primary,
                 },
-                headerTinColor: "#FFF",
+                headerTinColor: colors.primaryTextContrast,
                 headerTitleStyle: {
                     fontWeight: "bold",
-                    color: "#FFF"
-                }
-            }
+                    color: colors.primaryTextContrast
+                },
+            },
         }
     )
 )
