@@ -9,6 +9,10 @@ const global = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: colors.background,
     },
+    loading: {
+        flex: 1,
+        alignSelf:'center'
+    },
 })
 
 export {global};

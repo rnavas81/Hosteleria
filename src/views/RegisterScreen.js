@@ -83,7 +83,7 @@ export default class RegisterScreen extends Component {
 	return (
 	  <SafeAreaView style={globalStyle.container,styles.container}>
 		{loading && 
-		  <ActivityIndicator style={styles.loading} size="large" color={colors.accent} />}
+		  <ActivityIndicator style={globalStyle.loading} size="large" color={colors.accent} />}
 		{!loading &&
 		  <View>
 			<Text style={styles.title}>{labels.title}</Text>
@@ -193,8 +193,4 @@ const styles = StyleSheet.create({
 		fontSize: 13,
 		marginLeft: 10,
 	},
-	loading: {
-		flex: 1,
-	},
-
 })
