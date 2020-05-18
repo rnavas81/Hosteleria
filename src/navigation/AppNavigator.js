@@ -5,12 +5,10 @@
  *  - react-navigation-stack        npm install --save react-navigation-stack
  */
 
-import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack'
 import { AuthScreen,ProfileScreen,RegisterScreen,CategoriesScreen } from '../views';
 import {getColors as colors} from '../styles/colors';
-import { Alert,TouchableOpacity,Text } from 'react-native';
 
 export default createAppContainer(
     createStackNavigator(
@@ -19,7 +17,7 @@ export default createAppContainer(
             Profile     : {screen: ProfileScreen},
             Register    : {screen: RegisterScreen},
             Categories  : {screen: CategoriesScreen},
-        },
+        }, 
         {//Propiedades del stack
             initialRouteName: "Categories",
             defaultNavigationOptions: {
