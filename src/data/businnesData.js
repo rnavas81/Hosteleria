@@ -1,5 +1,14 @@
 import { AsyncStorage, Alert } from 'react-native';
 
+const newTemplates = () => ({
+    allTemplates: [{
+        id: null,
+        businessType: "",
+        templates: [{
+            uri: ''
+        }]
+    }]
+})
 const MIMENU_KEY = "lMxzh2wvYdnwEMG9473w_Cur1ZnR8d8koYlcLSM64";
 const newCategory = (id,name,description,image,type) => ({
     id:id?id:0,

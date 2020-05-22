@@ -8,7 +8,7 @@
 import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack'
-import { AuthScreen,ProfileScreen,RegisterScreen,CategoriesScreen } from '../views';
+import { AuthScreen,ProfileScreen,RegisterScreen,CategoriesScreen, TemplateScreen} from '../views';
 import {getColors as colors} from '../styles/colors';
 import { Alert,TouchableOpacity,Text } from 'react-native';
 
@@ -19,9 +19,10 @@ export default createAppContainer(
             Profile     : {screen: ProfileScreen},
             Register    : {screen: RegisterScreen},
             Categories  : {screen: CategoriesScreen},
+            Templates   : {screen: TemplateScreen},
         },
         {//Propiedades del stack
-            initialRouteName: "Categories",
+            initialRouteName: "Templates",
             defaultNavigationOptions: {
                 headerStyle: {
                     backgroundColor: colors.primary,
