@@ -16,6 +16,7 @@ import {
     RegisterScreen,
     CategoriesScreen,
     SettingsScreen,
+    TemplateScreen,
 } from '../views';
 import {getColors as colors} from '../styles/colors';
 
@@ -57,6 +58,9 @@ function StackNavigator(params) {
             title: "Ajsutes",
         }}/>
         <Stack.Screen name="Categories" component={CategoriesScreen}  options={{
+            title: "Categorias",
+        }}/>
+        <Stack.Screen name="Templates" component={TemplateScreen}  options={{
             title: "Categorias",
         }}/>
       </Stack.Navigator>

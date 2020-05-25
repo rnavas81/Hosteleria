@@ -6,7 +6,10 @@ import AuthScreen from './AuthScreen';
 import ProfileScreen from './ProfileScreen';
 import RegisterScreen from './RegisterScreen';
 import CategoriesScreen from './CategoriesScreen';
+=======
 import SettingsScreen from './SettingsScreen';
+import TemplateScreen from './TemplateScreen';
+
 
 export {
   InitScreen,
@@ -15,4 +18,5 @@ export {
   RegisterScreen,
   CategoriesScreen,
   SettingsScreen,
+  TemplateScreen,
 };
