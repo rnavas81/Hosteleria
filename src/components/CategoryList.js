@@ -18,7 +18,7 @@ const labels={
     menus:'Menús disponibles...'
 }
 const CategoryList = ({
-    categories,onUpdate,onDelete,onEdit
+    categories,onDelete,onEdit
 }) => {
 
     renderItem = category => (

@@ -22,9 +22,6 @@ const labels = {
   signInWithGoogle:'Accede con Google',
 }
 export default class AuthScreen extends Component {
-	static navigationOptions = {
-		title: "Acceso"
-  }
   
   state = { user: null };
 
@@ -36,6 +33,22 @@ export default class AuthScreen extends Component {
 
   signInWithGoogle = async () => {
     Alert.alert("Conectar con...","Intentando conectar con Google");
+    this.props.navigation.navigate('Register',{
+      data:
+        {
+          id: null,
+          personal: {
+              name:'Google test',
+              type:2,
+              address:'Calle google',
+              phone:'000-000-000',
+              timetable:'',
+              logo:null,
+              local:null,
+          },
+          categories:[]
+      }
+    })
     // try {
     //   const result = await Google.logInAsync({
     //     iosClientId: IOS_CLIENT_ID,
@@ -59,6 +72,22 @@ export default class AuthScreen extends Component {
   };
   signInWithFacebook = async () => {
     Alert.alert("Conectar con...","Intentando conectar con Facebook");
+    this.props.navigation.navigate('Register',{
+      data:
+        {
+          id: null,
+          personal: {
+              name:'Facebook test',
+              type:3,
+              address:'Calle Facebook numero 1',
+              phone:'000-000-000',
+              timetable:'',
+              logo:null,
+              local:null,
+          },
+          categories:[]
+      }
+    })
 
   }
 

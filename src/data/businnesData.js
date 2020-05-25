@@ -21,6 +21,9 @@ const newData = () => ({
     },
     categories:[]
 })
+const getEmptyData = () => {
+    return newData();
+}
 const getData = async () =>{
     let data = {};
     try {
@@ -32,57 +35,7 @@ const getData = async () =>{
     if(data==null)data = JSON.stringify(newData());
     data = JSON.parse(data);
     if(data.categories==null){
-        data.categories = [
-            {
-                id:1,
-                name:"Entrantes",
-                description:"",
-                image:null,
-                type:1
-            },
-            {
-                id:2,
-                name:"Primeros",
-                description:"",
-                image:null,
-                type:1
-            },
-            {
-                id:3,
-                name:"Segundos",
-                description:"",
-                image:null,
-                type:1
-            },
-            {
-                id:4,
-                name:"Postres",
-                description:"",
-                image:null,
-                type:1
-            },
-            {
-                id:5,
-                name:"Bebidas",
-                description:"",
-                image:null,
-                type:1
-            },
-            {
-                id:6,
-                name:"Menú del día",
-                description:"",
-                image:null,
-                type:2
-            },
-            {
-                id:7,
-                name:"Menú degustación",
-                description:"",
-                image:null,
-                type:2
-            }
-        ];
+        data.categories = []
     }
     return data;
 };
@@ -94,4 +47,4 @@ const saveData = async data => {
         Alert.alert('Error','Error al guardar los datos en el sistema');
     }
 }
-export {newData,saveData,getData}
+export {newData,saveData,getData,getEmptyData}

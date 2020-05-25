@@ -5,7 +5,7 @@ const lightColors = {
 	secondary: "#FFC981",
 	accent: "#F49F2F",
 	background: "#D1D1D1",
-	shadowColor: "rgba(0, 0, 0, 0.75)",
+	shadowColor: "rgba(0, 0, 0, 0.5)",
 	danger: "#ff3232",
 	background2: "rgb(240,240,240)",
 	backgroundContent: "#fff",
@@ -13,6 +13,7 @@ const lightColors = {
 	placeHolder: "#aaa",
 	buton1: "#052C45",
 	buton2: "rgb(76, 121, 255)",
+	dark: "#181818"
 }
 
 export const getColors = lightColors;

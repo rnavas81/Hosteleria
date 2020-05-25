@@ -17,7 +17,7 @@ import { globalStyle } from '../styles';
 import {getColors as colors} from '../styles/colors';
 import { Button } from '../components';
 import {Picker} from '@react-native-community/picker';
-import {newData,saveData,getData} from '../data/businnesData';
+import {saveData} from '../data/businnesData';
 const labels = {
 	title:"Por favor, indica la información del local para ofrecerte el mejor servicio posible",
 	name:"Nombre del bar/restaurante",
@@ -38,46 +38,43 @@ export default class RegisterScreen extends Component {
 		super(props)
 		this.state = {
 			loading:true,
-			data:newData()
+			data:props.route.params.data
 		};
 	};
-  
-	static navigationOptions = {
-		title: "Regsitro"
-  }
-  componentDidMount = async ()=> {
-	let data = await getData();
-	this.setState({
-	  data:data,
-	  loading: false
-	})
-  }
-  continue = async() => {
-	if(this.validate()){
-	  await saveData(this.state.data);
+	componentDidMount = async ()=> {
+		this.setState({
+		loading: false
+		})
 	}
-  };
-  validate = ()=>{
-	let errors="";
-	let data = this.state.data;
-	if(data.personal.name.trim()=="")errors+= "Nombre vacío";
-	errors!="" && Alert.alert("Errores",errors);
-	return errors=="";
-  }
-  handleChange = (key,text) => {
-	let data = this.state.data;
-	data.personal[key]=text;
-	this.setState({data:data});
-  }
-  fotoLogo = () => {
-	this.cargarFoto();
-  }
-  fotoLocal = () => {
-	this.cargarFoto();
-  }
-  cargarFoto = () => {
-	Alert.alert("Cargar imagen...");
-  }
+	continue = async() => {
+		if(this.validate()){
+		await saveData(this.state.data);
+		this.props.navigation.navigate('Categories',{
+			data:this.state.data
+		});
+		}
+	};
+	validate = ()=>{
+		let errors="";
+		let data = this.state.data;
+		if(data.personal.name.trim()=="")errors+= "Nombre vacío";
+		errors!="" && Alert.alert("Errores",errors);
+		return errors=="";
+	}
+	handleChange = (key,text) => {
+		let data = this.state.data;
+		data.personal[key]=text;
+		this.setState({data:data});
+	}
+	fotoLogo = () => {
+		this.cargarFoto();
+	}
+	fotoLocal = () => {
+		this.cargarFoto();
+	}
+	cargarFoto = () => {
+		Alert.alert("Cargar imagen...");
+	}
   render() {
 	const {data,loading} = this.state;
 	return (
@@ -101,9 +98,9 @@ export default class RegisterScreen extends Component {
 				<Picker style={{}} placeholder={labels.businesPlaceholder}
 				  selectedValue={data.personal.type}
 				  onValueChange={itemValue=>this.handleChange('type',itemValue)}>
-				  <Picker.item value='1' key='1' label='1'/>
-				  <Picker.item value='2' key='2' label='2'/>
-				  <Picker.item value='3' key='3' label='3'/>
+				  <Picker.Item value={1} label="Bar"/>
+				  <Picker.Item value={2} label="Restaurante"/>
+				  <Picker.Item value={3} label="Cafetería"/>
 				</Picker>
 			  </View>
 			</View>
