@@ -17,18 +17,18 @@ export default class TemplateScreen extends Component{
     constructor(props){
         super(props);
         this.state = { 
-            uri: require('../../assets/imagenes_prueba/sora.jpg') 
+            // uri: require('../../assets/imagenes_prueba/sora.jpg') 
         }
     };
     previousTemplate = async () => {
         this.setState({
-            uri: require('../../assets/imagenes_prueba/gif.gif')
+            // uri: require('../../assets/imagenes_prueba/gif.gif')
         });
     }
 
     nextTemplate = async () => {
         this.setState({
-            uri: require('../../assets/imagenes_prueba/cruz.png')
+            // uri: require('../../assets/imagenes_prueba/cruz.png')
         });
     }
 
