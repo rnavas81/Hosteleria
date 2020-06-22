@@ -7,41 +7,33 @@ import {
   StyleSheet,
   View,
   Text,
-  Image,
-  Alert
-} from 'react-native';
+  Image} from 'react-native';
 import * as Progress from 'react-native-progress';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { 
+  addBussinesTypes,
+  getServerBussinesTypes,
+} from '../redux/reducers/bussinesTypesReducers';
 
-import { getServerBussinesTypes,getBussinesTypes,saveBussinesTypes } from '../redux/reducers/bussinesTypesReducers';
+import {
+  addTemplates,
+  getServerTemplates,
+} from '../redux/reducers/templatesReducers';
 
-import {getServerBussinesTypeData} from '../data/bussinesTypeData';
+import {
+  addUserdata,
+  getServerUserData,
+} from '../redux/reducers/userDataReducers';
+
+import {
+  addPermission
+} from '../redux/reducers/permissionsReducer';
+
+import  * as Permissions from 'expo-permissions';
 import image from '../../assets/splash.png';
-import {globalStyle} from '../styles/';
 import {getColors as colors } from '../styles/colors';
 
-const mapStateToProps = state => {
-  return {
-    bussinesTypes:state.bussinesTypes,
-    templates:state.templates,
-    data:state.data,
-  }
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {
-      getServerBussinesTypes,
-      getBussinesTypes,
-      saveBussinesTypes,
-    },
-    dispatch
-  )
-}
-
-//Retraso de inicio
-const delay = ms => new Promise(res => setTimeout(res,ms));
 
 const carga = [
   {accion:'components',texto:'Cargando componentes...'},
@@ -67,13 +59,28 @@ class InitScreen extends Component {
       const accion = carga[i].accion
       switch(accion){
         case 'components':
+          //Permisos para acceder a las imagenes del terminal
+          const { status: cameraStatus } = await Permissions.getAsync(
+            Permissions.CAMERA_ROLL
+          );
+          this.props.addPermission(Permissions.CAMERA_ROLL,cameraStatus === "granted");
+          // this.setState({
+          //   loading: false,
+          //   hasCameraPermission: cameraStatus === "granted",
+          // })
+
           break;
         case 'bussinesTypes':
-          this.loadBussinesTypes();
+          const datatypes = await getServerBussinesTypes();
+          this.props.addBussinesTypes(datatypes);
           break;
         case 'templates':
+          const datatemplates = await getServerTemplates();
+          this.props.addTemplates(datatemplates);
           break;
         case 'user':
+          const datauser = await getServerUserData();
+          this.props.addUserdata(datauser);
           break;
         default:
           break;
@@ -97,14 +104,8 @@ class InitScreen extends Component {
       this.pasarPagina();
     }
   }
-  loadBussinesTypes = async () => {
-    let data = await this.props.getServerBussinesTypes();
-    // Alert.alert(JSON.stringify(data));
-  }
   pasarPagina = () =>{
-		this.props.navigation.navigate('Login',{
-			data:this.state.data
-		});
+		this.props.navigation.navigate('Login');
   }
   render() {
     return (
@@ -132,6 +133,26 @@ const styles = StyleSheet.create({
     height: 300
   }
 });
+const mapStateToProps = state => {
+  return {
+    bussinesTypes:state.bussinesTypes,
+    templates:state.templates,
+    permissions:state.permissions,
+    userdata:state.userdata,
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      addBussinesTypes,
+      addTemplates,
+      addUserdata,
+      addPermission,
+    },
+    dispatch
+  )
+}
 
 export default connect(
   mapStateToProps,

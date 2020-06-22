@@ -10,8 +10,10 @@ const global = StyleSheet.create({
         backgroundColor: colors.background,
     },
     loading: {
-        flex: 1,
-        alignSelf:'center'
+        flex:1,
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: 'center',
     },
 })
 

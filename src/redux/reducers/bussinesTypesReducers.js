@@ -1,8 +1,13 @@
-import {URL_API} from '../../global.cfg/const';
-import { Alert } from 'react-native';
+import {URL_API, URL_API_BUSSINESTYPES, URL_API_TEMPLATES , BUSSINESTYPE_KEY} from '../../global.cfg/const';
+import { AsyncStorage, ToastAndroid, Alert } from 'react-native';
+
 const GET_TYPES = "bussinesTypes/GET_TYPES";
-const GET_SERVER_TYPES = "bussinesTypes/GET_SERVER_TYPES";
-const SAVE_TYPES = "bussinesTypes/SAVE_TYPES";
+const ADD_TYPE = "bussinesTypes/ADD_TYPE";
+const ADD_TYPES = "bussinesTypes/ADD_TYPES";
+const SET_TYPES = "bussinesTypes/SET_TYPES";
+
+// const GET_SERVER_TYPES = "bussinesTypes/GET_SERVER_TYPES";
+// const SAVE_TYPES = "bussinesTypes/SAVE_TYPES";
 
 const initialState = [
   {
@@ -20,53 +25,74 @@ const initialState = [
   }
 ]
 
-export default bussinesTypesReducers = (state = initialState, action) => {
+export default bussinesTypesReducers = (state = [], action) => {
   switch (action.type) {
-    case GET_SERVER_TYPES:
-      // Alert.alert(JSON.stringify(types));
-      return [ ...state];
     case GET_TYPES:
       return [ ...state];
-    case SAVE_TYPES:
-      return [ ...state];
+    case ADD_TYPE:
+			if (!state.some(n => n.id === action.item.id)) {
+				return [...state, { ...action.type }];
+      }
+    case ADD_TYPES:
+      action.items.forEach(element => {
+        if (!state.some(n => n.id === element.id)) {
+          return [...state, { ...element }];
+        }        
+      });
+    case SET_TYPES:
+      return [...action.items];
     default:
       return state
   }
 };
 
 
-export const getBussinesTypes = (params) => {
+export const getBussinesTypes = () => {
   return {
-    type: GET_TYPES,
+    type:GET_TYPES,
   }
-};
-
-export const getServerBussinesTypes = async (params) => {
-  return async (dispatch) => {
-    let newData
-    try {
-      let response = await fetch( URL_API, {
-        method:'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },  body: JSON.stringify({
-          firstParam: 'yourValue',
-          secondParam: 'yourOtherValue'
-        })
-      }).catch((error) => response=initialState);
-      newData=await response.json();      
-    } catch (error) {
-      newData=initialState;
+}
+export const addBussinesType = type => {
+  return {
+    type: ADD_TYPE,
+    item: type
+  }
+}
+export const addBussinesTypes = types => {
+  return {
+    type: ADD_TYPES,
+    items: types
+  }
+}
+export const setBussinesTypes = types => {
+  return {
+    type: SET_TYPES,
+    items: types
+  }
+}
+const getStoredBussinesTypes = async () => {
+  let data;
+  try {
+    data = await JSON.parse(AsyncStorage.getItem(BUSSINESTYPE_KEY));
+  } catch (error){
+    data = initialState;
+  }
+  return data;
+}
+export const getServerBussinesTypes = async () => {
+  let newData = [];
+  await fetch( URL_API+URL_API_BUSSINESTYPES, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
     }
-
-    dispatch(getBussinesTypes(newData));
-  }
-};
-
-export const saveBussinesTypes = (params) => {
-  return {
-    type: SAVE_TYPES,
-    params
-  }
-};
+  })
+  .then((response) => response.json())
+  .then((json) => {
+    newData=json;
+  })
+  .catch((error) => {
+    newData = getStoredBussinesTypes();
+  });
+  return newData;
+}

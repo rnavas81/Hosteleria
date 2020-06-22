@@ -26,6 +26,13 @@ const authentication = StyleSheet.create({
       textShadowColor: colors.shadowColor,
       textShadowOffset: {width: -1, height: 1},
       textShadowRadius: 5
+    },
+    loading: {
+      flex:1,
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: 'center',
+
     }
 
 });

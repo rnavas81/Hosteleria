@@ -23,6 +23,10 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "facebookScheme":"fb878719352630898",
+    "facebookAppId":"878719352630898",
+    "facebookDisplayName":"Hosteleria",
+    "facebookAutoInitEnabled":true
   }
 }

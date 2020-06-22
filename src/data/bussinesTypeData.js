@@ -1,6 +1,5 @@
 import { AsyncStorage, Alert } from 'react-native';
-const BUSSINESTYPE_KEY = "4Urk97HEtvu9kP9f1z35_WkStrgGvQ5t5cmEdlg3i";
-
+import { BUSSINESTYPE_KEY } from '../global.cfg/const';
 //Datos de prueba
 const dummyDataServerBussinesType = [
   {

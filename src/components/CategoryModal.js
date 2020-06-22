@@ -14,49 +14,55 @@ import {
 import Button from './Button';
 import {getColors as colors} from '../styles/colors';
 import { Picker } from "@react-native-community/picker";
+import  * as Permissions from 'expo-permissions';
+import  * as ImagePicker from 'expo-image-picker';
+import {
+  newUserDataCategory
+} from '../redux/reducers/userDataReducers';
 
-const initialState = {
-	name:'',
-	description:'',
-	type:1,
-	image:null
-};
+const initialState = {category:newUserDataCategory()}
 export default class CategoryModal extends Component {
 	constructor(props) {
 		super(props);
-		const { name,description,type,image } = this.props;
-		this.state = {
-			name:name,
-			description:description,
-			type:type,
-			image:image,
-		};
+		this.state = {...initialState}
+	}
+	componentDidMount = () => {
+		
 	}
 
 	onUpdateCategory = () => {
-		let category = {
-			name:this.state.name,
-			description:this.state.description,
-			type:this.state.type,
-			image:this.state.image,
-		}
+		let category = this.state.category;
 		this.props.onCategoryModal(category);
 		// reset initialState for next Add
 		this.setState(initialState);
-		onCloseModal();
+		this.props.onCloseModal();
 	};
-	subirFoto = () => {
-		Alert.alert("Abre la galería de imagenes o abre la cámara")		
+	subirFoto = async () => {
+		try {
+			const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+			if(status==="granted"){
+				let result = await ImagePicker.launchImageLibraryAsync({
+						allowsEditing: true,
+						aspect: [1, 1]
+				});
+				if(!result.cancelled){
+					this.handleChange({image:result.uri});
+				}
+			}
+		} catch (error) {
+		}	
 	}
 
-	handleChange = (key,value)=>{
-		let clave = key;
-		let valor = value;
-		this.setState({clave,valor});
+	handleChange = property=>{
+		let newCategory = {...this.props.category,...property};
+		// console.log(property,this.state.category,newCategory);
+		// this.setState({category:newCategory});
+		// this.
 	}
 
 	render() {
-		const { visible, onCloseModal } = this.props;
+		const { visible,onCloseModal } = this.props;
+		const {category} = this.state;
 		return (
 			<Modal
 				animationType="slide"
@@ -72,8 +78,8 @@ export default class CategoryModal extends Component {
 						<View style={styles.block}>
 							<Picker 
 							style={styles.textInput}
-							selectedValue={this.state.type}
-							onValueChange={itemValue=>this.handleChange('type',itemValue)}
+							selectedValue={this.props.category.type}
+							onValueChange={itemValue => this.handleChange({type:itemValue})}
 							>
 								<Picker.Item label='Producto' value={1}></Picker.Item>
 								<Picker.Item label='Menú' value={2}></Picker.Item>
@@ -83,8 +89,8 @@ export default class CategoryModal extends Component {
 							<Text style={styles.text}>Nombre de la categoría</Text>
 							<TextInput
 							style={styles.textInput}
-							value={this.state.name}
-							onChangeText={text => this.handleChange('name',text)}
+							value={this.props.category.name}
+							onChangeText={text => this.handleChange({name:text})}
 							clearButtonMode="always"
 							/>
 						</View>
@@ -92,8 +98,8 @@ export default class CategoryModal extends Component {
 							<Text style={styles.text}>Breve descripción</Text>
 							<TextInput
 							style={[styles.textInput, styles.textArea]}
-							value={this.state.description}
-							onChangeText={text => this.handleChange('name',text)}
+							value={this.props.category.description}
+							onChangeText={text => this.handleChange({name:text})}
 							numberOfLines={4}
 							multiline={true}
 							clearButtonMode="always"
@@ -102,22 +108,21 @@ export default class CategoryModal extends Component {
 						<View style={styles.block}>
 							<Button text={'Subir fotografía (opcional)'} icon='camera-outline' type='small' onPress={this.subirFoto}/>
 						</View>
-
-                        <View style={styles.block}>
-                            <View style={styles.imgContainer}>
-								{this.state.image &&
-									<Lightbox>
-										<Image 
-											style={styles.img}
-											resizeMode="contain"
-											source={{uri:this.state.image}}
-										/>
-									</Lightbox>
+							<View style={styles.block}>
+								{this.props.category.image!=null &&
+										<View style={styles.imgContainer}>
+										<Lightbox>
+											<Image 
+												style={styles.img}
+												resizeMode="contain"
+												source={{uri:this.props.category.image}}
+											/>
+										</Lightbox>
+									</View>
 								}
-                            </View>
-                        </View> 
+								</View> 
 						<View style={styles.buttonRow}>
-							<Button text="Cancelar" style={{width: "40%"}} onPress={onCloseModal} />
+							<Button text="Cancelar" style={{width: "40%"}} onPress={this.props.onCloseModal} />
 							<Button text="Guardar" style={{width: "40%"}} onPress={this.onUpdateCategory} />
 						</View>
 					</KeyboardAvoidingView>
@@ -129,14 +134,15 @@ export default class CategoryModal extends Component {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-    //   alignItems: "center",
+		//   alignItems: "center",
       flexDirection: "row",
       backgroundColor: colors.shadowColor,
     },
     content: {
       padding: 20,
       paddingBottom: 30,
-      flex: 1,
+			flex: 1,
+			alignSelf:'center',
       backgroundColor: colors.dark,
       shadowOffset: { width: 0, height: -3 },
       shadowColor: "black",
